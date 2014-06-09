@@ -20,11 +20,13 @@ public class GameBoard {
 		this.n = n;
 		this.board = new char[x][y];
 	}
-	
+
 	public void playGame(){
 		for(int i = 0; i < n ; i++){
-			propogate();
+			propagate();
+			//System.out.println(this);
 		}
+		
 	}
 
 	public String getStartingStringFromFile(String src){
@@ -58,30 +60,33 @@ public class GameBoard {
 	}
 
 
-	public void propogate(){
+	public void propagate(){
 		int numNeighborsYes = 0;
 		boolean isOn = false;
 		char[][] tempBoard = new char[x][y];
-		
 		for(int i = 0 ; i < x ; i++){
 			for(int j = 0 ; j < y ; j++){
-				
 				if(board[i][j] == ON)
 					isOn = true;
+				else
+					isOn = false;
 				numNeighborsYes=numberOfNeighbhorsOn(i, j);
 				if(isOn && (numNeighborsYes > 3 || numNeighborsYes < 2)){
-				tempBoard[i][j] = OFF;
+					tempBoard[i][j] = OFF;
 				}
-				if(isOn && (numNeighborsYes == 3 || numNeighborsYes == 2)){
-					tempBoard[i][j] = ON;
-					}
-				if(!isOn && numNeighborsYes == 3){
+				else if(isOn && ((numNeighborsYes == 3) || (numNeighborsYes == 2))){
 					tempBoard[i][j] = ON;
 				}
+				else if(!isOn && (numNeighborsYes == 3)){
+					tempBoard[i][j] = ON;
+				}
+				else
+					tempBoard[i][j] = board[i][j];
 			}
+			System.out.println("\n");
 		}
 		board = tempBoard;
-		
+
 	}
 	public int numberOfNeighbhorsOn(int i, int j){
 		int numOn = 0;
@@ -120,7 +125,7 @@ public class GameBoard {
 		return numOn;
 	}
 
-	
+
 	@Override
 	public String toString() {
 		String boardString = "";
@@ -128,7 +133,7 @@ public class GameBoard {
 			for(int j = 0 ; j < y ; j++){
 				boardString+=board[i][j];
 			}
-		boardString+="\n";
+			boardString+="\n";
 		}
 		return boardString;
 	}

@@ -5,7 +5,7 @@ public class Game {
 	
 	public static void main(String[] args){
 		GameBoard board = setUpBoard();
-		String boardStringRepresentation = board.getStartingStringFromFile("input.txt");
+		String boardStringRepresentation = board.getStartingStringFromFile("challenge.txt");
 		board.initializeBoard(boardStringRepresentation);
 		board.playGame();
 		System.out.println(board);
