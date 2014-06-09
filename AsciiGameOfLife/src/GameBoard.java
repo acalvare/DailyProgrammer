@@ -11,12 +11,20 @@ public class GameBoard {
 	private int y;
 	private int n;
 	private char[][] board;
+	final char ON = '#';
+	final char OFF = '.';
 
 	public GameBoard(int x, int y, int n){
 		this.x = x;
 		this.y = y;
 		this.n = n;
 		this.board = new char[x][y];
+	}
+	
+	public void playGame(){
+		for(int i = 0; i < n ; i++){
+			propogate();
+		}
 	}
 
 	public String getStartingStringFromFile(String src){
@@ -50,13 +58,67 @@ public class GameBoard {
 	}
 
 
-//	public void shiftValues(){
-//		for(int i = 0 ; i < x ; i++){
-//			for(int z = 0 ; z < y ; z++){
-//
-//			}
-//		}
-//	}
+	public void propogate(){
+		int numNeighborsYes = 0;
+		boolean isOn = false;
+		char[][] tempBoard = new char[x][y];
+		
+		for(int i = 0 ; i < x ; i++){
+			for(int j = 0 ; j < y ; j++){
+				
+				if(board[i][j] == ON)
+					isOn = true;
+				numNeighborsYes=numberOfNeighbhorsOn(i, j);
+				if(isOn && (numNeighborsYes > 3 || numNeighborsYes < 2)){
+				tempBoard[i][j] = OFF;
+				}
+				if(isOn && (numNeighborsYes == 3 || numNeighborsYes == 2)){
+					tempBoard[i][j] = ON;
+					}
+				if(!isOn && numNeighborsYes == 3){
+					tempBoard[i][j] = ON;
+				}
+			}
+		}
+		board = tempBoard;
+		
+	}
+	public int numberOfNeighbhorsOn(int i, int j){
+		int numOn = 0;
+		if(board[i][((j+1)%y)]==(ON))
+		{
+			numOn++;
+		}
+		if(board[i][(((j-1)+y)%y)]==(ON))
+		{
+			numOn++;
+		}
+		if(board[(i+1)%x][j]==(ON))
+		{
+			numOn++;
+		}
+		if(board[((i-1)+x)%x][j]==(ON))
+		{
+			numOn++;
+		}
+		if(board[((i-1)+x)%x][((j+1)%y)]==(ON))
+		{
+			numOn++;
+		}
+		if(board[((i-1)+x)%x][(((j-1)+y)%y)]==(ON))
+		{
+			numOn++;
+		}
+		if(board[(i+1)%x][((j+1)%y)]==(ON))
+		{
+			numOn++;
+		}
+		if(board[(i+1)%x][(((j-1)+y)%y)]==(ON))
+		{
+			numOn++;
+		}
+		return numOn;
+	}
 
 	
 	@Override
